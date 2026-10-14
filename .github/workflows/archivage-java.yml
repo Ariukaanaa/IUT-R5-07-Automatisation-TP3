@@ -1,4 +1,4 @@
-name: Archivage Java
+name: Archivage Java daté
 on: [push]
 
 permissions:
@@ -10,30 +10,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Création de rapport.txt
-        run: date > rapport.txt
+      # ⬇️ ШИНЭ: Огноо авах
+      - name: Définition de la date
+        id: date
+        run: echo "STAMP=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
 
+      # ⬇️ ШИНЭ: Огноотой архив
       - name: Archivage des .java
         run: |
-          zip -r archive.zip $(find . -name "*.java" -not -path "./.git/*")
+          zip -r archive_${{ steps.date.outputs.STAMP }}.zip \
+            $(find . -name "*.java" -not -path "./.git/*")
 
-      # Verification
-      - name: Vérification de l'intégrité de archive.zip
+      # ⬇️ ШИНЭ: Огноотой тайлан
+      - name: Vérification de l'intégrité
         run: |
-          unzip -t archive.zip >> rapport.txt
+          unzip -t archive_${{ steps.date.outputs.STAMP }}.zip \
+            > rapport_${{ steps.date.outputs.STAMP }}.txt
 
-      # Ajouter liste
-      - name: Liste des fichiers dans rapport.txt
+      # ⬇️ ШИНЭ: Жагсаалт нэмэх
+      - name: Liste des fichiers
         run: |
-          echo "" >> rapport.txt
-          echo "=== Contenu de archive.zip ===" >> rapport.txt
-          unzip -l archive.zip >> rapport.txt
+          echo "" >> rapport_${{ steps.date.outputs.STAMP }}.txt
+          echo "=== Contenu de archive_${{ steps.date.outputs.STAMP }}.zip ===" \
+            >> rapport_${{ steps.date.outputs.STAMP }}.txt
+          unzip -l archive_${{ steps.date.outputs.STAMP }}.zip \
+            >> rapport_${{ steps.date.outputs.STAMP }}.txt
 
       - name: Commit et push
         run: |
           git config --global user.name "Ariukaanaa"
-          git config --global user.email "xxx+Ariukaanaa@users.noreply.github.com"
-          git add rapport.txt archive.zip
-          git commit -m "push archive.zip et rapport.txt [skip ci]"
+          git config --global user.email "ariunbayar443@gmail.com"
+          git add archive_*.zip rapport_*.txt
+          git commit -m "Archive ${{ steps.date.outputs.STAMP }} [skip ci]"
           git push
