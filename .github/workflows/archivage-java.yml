@@ -1,23 +1,37 @@
-name: Test push rapport.txt
+name: Archivage Java
 on: [push]
 
 permissions:
   contents: write
 
 jobs:
-  test-push:
+  archive:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout du dépôt
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Création de rapport.txt
         run: date > rapport.txt
 
+      - name: Archivage des .java
+        run: |
+          zip -r archive.zip $(find . -name "*.java" -not -path "./.git/*")
+
+      - name: Vérification de archive.zip
+        run: |
+          unzip -t archive.zip >> rapport.txt
+
+      - name: Liste des fichiers
+        run: |
+          echo "" >> rapport.txt
+          echo "=== Contenu de archive.zip ===" >> rapport.txt
+          unzip -l archive.zip >> rapport.txt
+
       - name: Commit et push
         run: |
           git config --global user.name "Ariukaanaa"
-          git config --global user.email arinbayar443@gmail.com
-          git add rapport.txt
-          git commit -m "test push de rapport.txt"
+          git config --global user.email "ariunbayar443@gmail.com"
+          git add rapport.txt archive.zip
+          git commit -m "push archive.zip et rapport.txt [skip ci]"
           git push
