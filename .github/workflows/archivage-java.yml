@@ -18,11 +18,13 @@ jobs:
         run: |
           zip -r archive.zip $(find . -name "*.java" -not -path "./.git/*")
 
-      - name: Vérification de archive.zip
+      # Verification
+      - name: Vérification de l'intégrité de archive.zip
         run: |
           unzip -t archive.zip >> rapport.txt
 
-      - name: Liste des fichiers
+      # Ajouter liste
+      - name: Liste des fichiers dans rapport.txt
         run: |
           echo "" >> rapport.txt
           echo "=== Contenu de archive.zip ===" >> rapport.txt
@@ -31,7 +33,7 @@ jobs:
       - name: Commit et push
         run: |
           git config --global user.name "Ariukaanaa"
-          git config --global user.email "ariunbayar443@gmail.com"
+          git config --global user.email "xxx+Ariukaanaa@users.noreply.github.com"
           git add rapport.txt archive.zip
           git commit -m "push archive.zip et rapport.txt [skip ci]"
           git push
