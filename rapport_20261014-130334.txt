@@ -1,0 +1,11 @@
+Archive:  archive_20261014-130334.zip
+    testing: LigneEtoile.java         OK
+No errors detected in compressed data of archive_20261014-130334.zip.
+
+=== Contenu de archive_20261014-130334.zip ===
+Archive:  archive_20261014-130334.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+      122  2026-10-14 13:03   LigneEtoile.java
+---------                     -------
+      122                     1 file
