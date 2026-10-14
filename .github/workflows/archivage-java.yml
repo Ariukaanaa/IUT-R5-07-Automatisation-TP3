@@ -1,1 +1,23 @@
+name: Test push rapport.txt
+on: [push]
 
+permissions:
+  contents: write
+
+jobs:
+  test-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du dépôt
+        uses: actions/checkout@v4
+
+      - name: Création de rapport.txt
+        run: date > rapport.txt
+
+      - name: Commit et push
+        run: |
+          git config --global Ariukaanaa
+          git config --global user.email arinbayar443@gmail.com
+          git add rapport.txt
+          git commit -m "test push de rapport.txt"
+          git push
